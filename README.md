@@ -5,7 +5,7 @@ Team generator is used to generate teams from a given list of people according t
 - How to run the application the first time is explained in _How to run the application_ section.
 - How to create a proper CSV file is explained in _How to create a CSV file_ section.
 
-# Expected input:
+## Expected input:
 
 - **CSV** (comma or semi comma separated) file, with columns:
   - **Name** (mandatory)
@@ -15,7 +15,7 @@ Team generator is used to generate teams from a given list of people according t
 
 _1 pic – CSV file input example_
 
-# Application usage:
+## Application usage:
 
 _2 pic – application_
 
@@ -41,13 +41,13 @@ In the example:
 
 500/500 tries have been used. That means that if better results are wanted – the number of tries should be increased. The system tries to get the best results. If it manages to distribute people evenly it stops processing and returns the result without using all the given tries.
 
-# Output:
+## Output:
 
 **CSV** file containing people divided into a selected number of teams, trying to distribute them according to their criteria. People who are not joining (according to the joining column) are not taken into teams.
 
 _4 pic – CSV output example_
 
-# How does criteria work?
+## How does criteria work?
 
 The application is trying to distribute people evenly throughout the teams according to their criteria. For example: trying to have teams with equal number of females and males.
 
