@@ -13,9 +13,13 @@ Team generator is used to generate teams from a given list of people according t
   - **Criteria** columns (if you want some criteria to be taken into consideration when dividing into teams)
 - Quotes, commas and semi commas should **not** be used in the file.
 
+![alt text](img/CSV_input_sample.png "CSV file input example")
+
 _1 pic – CSV file input example_
 
 ## Application usage:
+
+![alt text](img/app_sample.png "application")
 
 _2 pic – application_
 
@@ -26,6 +30,8 @@ _2 pic – application_
 5. Render
 
 After rendering the file an information popup will appear explaining what happened.
+
+![alt text](img/app_info_sample.png "Information window example")
 
 _3 pic – Information window example_
 
@@ -45,6 +51,8 @@ In the example:
 
 **CSV** file containing people divided into a selected number of teams, trying to distribute them according to their criteria. People who are not joining (according to the joining column) are not taken into teams.
 
+![alt text](img/CSV_output_sample.png "CSV output example")
+
 _4 pic – CSV output example_
 
 ## How does criteria work?
@@ -59,6 +67,8 @@ The application is a Java 10 executable file. That means that you have to have a
 
 [http://www.oracle.com/technetwork/java/javase/downloads/jre10-downloads-4417026.html](http://www.oracle.com/technetwork/java/javase/downloads/jre10-downloads-4417026.html)
 
+![alt text](img/JRE_10_download.png "JRE 10 download page")
+
 _5 pic – JRE 10 download page_
 
 1. Accept the License Agreement
@@ -66,8 +76,14 @@ _5 pic – JRE 10 download page_
 3. Install it by clicking next all the time
 4. After installation the application will have a Java runnable icon (_6 pic)_ – that means you can double click it and it will run
 
+![alt text](img/java_icon_sample.png "Team Generator application icon")
+
 _6 pic – Team Generator application icon_
 
 # How to create a CSV file?
 
 Create an excel file and save it as **CSV (Comma delimited) (\*.csv)**. Other formats are not guaranteed to work.
+
+![alt text](img/save_as_CSV_sample.png "Save as CSV file")
+
+_7 pic – Save as CSV file_
