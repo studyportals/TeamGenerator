@@ -1,6 +1,6 @@
 # Team generator usage guide
 
-Team generator is used to generate teams from a given list of people according to given **criteria** , distributing people who have the same criteria evenly throughout the teams.
+Team generator is used to generate teams from a given list of people according to given **criteria**, distributing people who have the same criteria evenly throughout the teams.
 
 - [**Expected input**](#expected-input)
 - [**Application usage**](#application-usage)
