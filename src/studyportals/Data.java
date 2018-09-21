@@ -60,18 +60,22 @@ public class Data {
         return this.peoplePerTeam;
     }
 
-    public void updateCriteriasPerTeam(){
+    private void updateCriteriasPerTeam(){
         List<Criteria> allCriteria = new ArrayList<>();
         for(Person person: this.peopleList){
             allCriteria.addAll(person.getCriteriaList());
         }
         for(Criteria criteria: this.possibleCriterias){
             Integer occurrences = Collections.frequency(allCriteria, criteria);
-            for(Person person: this.peopleList){
-                for(Criteria personCriteria: person.getCriteriaList()){
-                    if(personCriteria.equals(criteria)){
-                        personCriteria.setOccurrencePerTeam(occurrences);
-                    }
+            setCriteriaOccurrencePerTeam(criteria, occurrences);
+        }
+    }
+
+    private void setCriteriaOccurrencePerTeam(Criteria criteria, Integer occurrences){
+        for(Person person: this.peopleList){
+            for(Criteria personCriteria: person.getCriteriaList()){
+                if(personCriteria.equals(criteria)){
+                    personCriteria.setOccurrencePerTeam(occurrences);
                 }
             }
         }

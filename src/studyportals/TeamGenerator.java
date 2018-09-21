@@ -17,16 +17,7 @@ public class TeamGenerator {
         Data data = fileHandler.getData(amountOfTeams);
 
         for(tryCount = 1; tryCount < totalTries; tryCount++) {
-            data.shufflePeople();
-
-            List<Person> notProcessedPeople = new ArrayList<>();
-            List<List<Person>> teams = getTeams(data.getPeopleList(), data.getAmountOfTeams(), notProcessedPeople);
-
-            distributeRestOfThePeopleIntoTeams(teams, notProcessedPeople);
-
-            fixTeamsWithTooLittlePeople(teams, data.getPeoplePerTeam());
-            fixTeamsWithTooManyPeople(teams, data.getPeoplePerTeam());
-
+            List<List<Person>> teams = distributePeopleInTeams(data);
             List<Mistake> mistakes;
             try {
                 mistakes = getMistakes(teams, data.getPeoplePerTeam(), data.getPossibleCriterias());
@@ -52,6 +43,20 @@ public class TeamGenerator {
         return new Information(finalTeamsMistakes, totalTries, tryCount);
     }
 
+    private static List<List<Person>> distributePeopleInTeams(Data data){
+        data.shufflePeople();
+
+        List<Person> notProcessedPeople = new ArrayList<>();
+        List<List<Person>> teams = getTeams(data.getPeopleList(), data.getAmountOfTeams(), notProcessedPeople);
+
+        distributeRestOfThePeopleIntoTeams(teams, notProcessedPeople);
+
+        fixTeamsWithTooLittlePeople(teams, data.getPeoplePerTeam());
+        fixTeamsWithTooManyPeople(teams, data.getPeoplePerTeam());
+
+        return teams;
+    }
+
     private static List<List<Person>> getTeams(List<Person> personList, Integer amountOfTeams, List<Person> notProcessedPeople){
         List<List<Person>> peopleBuckets = getPeopleBuckets(personList);
         List<Person> peopleInOrder = putPeopleInOrder(amountOfTeams, peopleBuckets, notProcessedPeople);
@@ -63,14 +68,7 @@ public class TeamGenerator {
     private static List<List<Person>> getPeopleBuckets(List<Person> personList){
         List<List<Person>> peopleBuckets = new ArrayList<>();
         for(Person person: personList){
-            boolean added = false;
-            for(List<Person> bucket: peopleBuckets){
-                if(!bucket.isEmpty() && person.isEqualCriteriaList(bucket.get(0).getCriteriaList())){
-                    bucket.add(person);
-                    added = true;
-                    break;
-                }
-            }
+            boolean added = addPersonToBucket(peopleBuckets, person);
             if(!added){
                 List<Person> bucket = new ArrayList<>();
                 bucket.add(person);
@@ -78,6 +76,18 @@ public class TeamGenerator {
             }
         }
         return peopleBuckets;
+    }
+
+    private static boolean addPersonToBucket(List<List<Person>> peopleBuckets, Person person){
+        boolean added = false;
+        for(List<Person> bucket: peopleBuckets){
+            if(!bucket.isEmpty() && person.isEqualCriteriaList(bucket.get(0).getCriteriaList())){
+                bucket.add(person);
+                added = true;
+                break;
+            }
+        }
+        return added;
     }
 
     private static List<List<Person>> initiateTeams(Integer amountOfTeams){
@@ -143,13 +153,7 @@ public class TeamGenerator {
 
     private static List<List<Person>> getAvailableTeams(List<List<Person>> teams, Criteria criteria){
         List<List<Person>> availableTeams = new ArrayList<>();
-        Integer minOccurences = Integer.MAX_VALUE;
-        for(List<Person> team: teams){
-            Integer occurences = getCriteriaOccurences(team, criteria);
-            if(occurences < minOccurences){
-                minOccurences = occurences;
-            }
-        }
+        Integer minOccurences = getMinOccurenceOfCriteriaPerTeam(teams, criteria);
         for(List<Person> team: teams){
             Integer occurences = getCriteriaOccurences(team, criteria);
             if(occurences.equals(minOccurences)){
@@ -157,6 +161,17 @@ public class TeamGenerator {
             }
         }
         return availableTeams;
+    }
+
+    private static Integer getMinOccurenceOfCriteriaPerTeam(List<List<Person>> teams, Criteria criteria){
+        Integer minOccurences = Integer.MAX_VALUE;
+        for(List<Person> team: teams){
+            Integer occurences = getCriteriaOccurences(team, criteria);
+            if(occurences < minOccurences){
+                minOccurences = occurences;
+            }
+        }
+        return minOccurences;
     }
 
     private static Integer getCriteriaOccurences(List<Person> team, Criteria criteria){
@@ -197,15 +212,19 @@ public class TeamGenerator {
             Integer peopleTooMany = team.size() - Collections.max(peoplePerTeam);
             for(int i = 0; i < peopleTooMany; i++){
                 List<List<Person>> teamsWithAddablePeople = getTeamsWithLessPeople(teams, Collections.max(peoplePerTeam));
-                for(Person person: team){
-                    if(isRemovablePerson(team, person)){
-                        List<Person> teamToAddTo = getTeamToAddTo(teamsWithAddablePeople, person);
-                        if(teamToAddTo != null){
-                            teamToAddTo.add(person);
-                            team.remove(person);
-                            break;
-                        }
-                    }
+                removePersonFromBigTeamAndAddToAnother(team, teamsWithAddablePeople);
+            }
+        }
+    }
+
+    private static void removePersonFromBigTeamAndAddToAnother(List<Person> team, List<List<Person>> teamsWithAddablePeople){
+        for(Person person: team){
+            if(isRemovablePerson(team, person)){
+                List<Person> teamToAddTo = getTeamToAddTo(teamsWithAddablePeople, person);
+                if(teamToAddTo != null){
+                    teamToAddTo.add(person);
+                    team.remove(person);
+                    return;
                 }
             }
         }
@@ -237,12 +256,7 @@ public class TeamGenerator {
         List<Criteria> uniqueCriteria = getUniqueCriterias(team);
 
         for(Criteria criteria: uniqueCriteria) {
-            Integer occurences = 0;
-            for (Person person : team) {
-                if (person.getCriteriaList().contains(criteria)){
-                    occurences++;
-                }
-            }
+            Integer occurences = getCriteriaOccurencesPerTeam(criteria, team);
             if(occurences >= Collections.max(criteria.getOccurrencePerTeam())){
                 criteriasWhichAreEnough.add(criteria);
             }
@@ -250,6 +264,15 @@ public class TeamGenerator {
         return criteriasWhichAreEnough;
     }
 
+    private static Integer getCriteriaOccurencesPerTeam(Criteria criteria, List<Person> team){
+        Integer occurences = 0;
+        for (Person person : team) {
+            if (person.getCriteriaList().contains(criteria)){
+                occurences++;
+            }
+        }
+        return occurences;
+    }
 
     private static List<List<Person>> getTeamsWithLessPeople(List<List<Person>> teams, Integer peoplePerTeam){
         List<List<Person>> teamsWithAddablePeople = new ArrayList<>();
