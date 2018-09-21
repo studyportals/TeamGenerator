@@ -171,7 +171,7 @@ public class TeamGenerator {
 
 
     private static void fixTeamsWithTooLittlePeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
-        List<List<Person>> teamsWithTooLittlePeople = getTeamsWithTooLittlePeople(teams, peoplePerTeam);
+        List<List<Person>> teamsWithTooLittlePeople = getTeamsWithLessPeople(teams, Collections.min(peoplePerTeam));
         if(teamsWithTooLittlePeople.isEmpty()) {
             return;
         }
@@ -179,7 +179,7 @@ public class TeamGenerator {
             Integer peopleLacking = Collections.min(peoplePerTeam) - team.size();
             for(int i = 0; i < peopleLacking; i++){
                 List<Criteria> criteriasWhichAreEnough = getCriteriasWhichAreEnough(team);
-                List<List<Person>> teamsWithRemovablePeople = getTeamsWithRemovablePeople(teams, peoplePerTeam);
+                List<List<Person>> teamsWithRemovablePeople = getTeamsWithMorePeople(teams, Collections.min(peoplePerTeam));
                 Person person = getPersonFromTeamsWithNotCriteria(teamsWithRemovablePeople, criteriasWhichAreEnough);
                 if(person != null) {
                     team.add(person);
@@ -188,25 +188,15 @@ public class TeamGenerator {
         }
     }
 
-    private static List<List<Person>> getTeamsWithTooLittlePeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
-        List<List<Person>> teamsWithTooLittlePeople = new ArrayList<>();
-        for(List<Person> team: teams){
-            if(team.size() < Collections.min(peoplePerTeam)){
-                teamsWithTooLittlePeople.add(team);
-            }
-        }
-        return teamsWithTooLittlePeople;
-    }
-
     private static void fixTeamsWithTooManyPeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
-        List<List<Person>> teamsWithTooManyPeople = getTeamsWithTooManyPeople(teams, peoplePerTeam);
+        List<List<Person>> teamsWithTooManyPeople = getTeamsWithMorePeople(teams, Collections.max(peoplePerTeam));
         if(teamsWithTooManyPeople.isEmpty()){
             return;
         }
         for(List<Person> team: teamsWithTooManyPeople){
             Integer peopleTooMany = team.size() - Collections.max(peoplePerTeam);
             for(int i = 0; i < peopleTooMany; i++){
-                List<List<Person>> teamsWithAddablePeople = getTeamsWithAddablePeople(teams, peoplePerTeam);
+                List<List<Person>> teamsWithAddablePeople = getTeamsWithLessPeople(teams, Collections.max(peoplePerTeam));
                 for(Person person: team){
                     if(isRemovablePerson(team, person)){
                         List<Person> teamToAddTo = getTeamToAddTo(teamsWithAddablePeople, person);
@@ -221,10 +211,10 @@ public class TeamGenerator {
         }
     }
 
-    private static List<List<Person>> getTeamsWithTooManyPeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
+    private static List<List<Person>> getTeamsWithMorePeople(List<List<Person>> teams, Integer peoplePerTeam){
         List<List<Person>> teamsWithTooManyPeople = new ArrayList<>();
         for(List<Person> team: teams){
-            if(team.size() > Collections.max(peoplePerTeam)){
+            if(team.size() > peoplePerTeam){
                 teamsWithTooManyPeople.add(team);
             }
         }
@@ -260,20 +250,11 @@ public class TeamGenerator {
         return criteriasWhichAreEnough;
     }
 
-    private static List<List<Person>> getTeamsWithRemovablePeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
-        List<List<Person>> teamsWithRemovablePeople = new ArrayList<>();
-        for(List<Person> team: teams){
-            if(team.size() > Collections.min(peoplePerTeam)){
-                teamsWithRemovablePeople.add(team);
-            }
-        }
-        return teamsWithRemovablePeople;
-    }
 
-    private static List<List<Person>> getTeamsWithAddablePeople(List<List<Person>> teams, List<Integer> peoplePerTeam){
+    private static List<List<Person>> getTeamsWithLessPeople(List<List<Person>> teams, Integer peoplePerTeam){
         List<List<Person>> teamsWithAddablePeople = new ArrayList<>();
         for(List<Person> team: teams){
-            if(team.size() < Collections.max(peoplePerTeam)){
+            if(team.size() < peoplePerTeam){
                 teamsWithAddablePeople.add(team);
             }
         }
