@@ -256,22 +256,12 @@ public class TeamGenerator {
         List<Criteria> uniqueCriteria = getUniqueCriterias(team);
 
         for(Criteria criteria: uniqueCriteria) {
-            Integer occurences = getCriteriaOccurencesPerTeam(criteria, team);
+            Integer occurences = getCriteriaOccurences(team, criteria);
             if(occurences >= Collections.max(criteria.getOccurrencePerTeam())){
                 criteriasWhichAreEnough.add(criteria);
             }
         }
         return criteriasWhichAreEnough;
-    }
-
-    private static Integer getCriteriaOccurencesPerTeam(Criteria criteria, List<Person> team){
-        Integer occurences = 0;
-        for (Person person : team) {
-            if (person.getCriteriaList().contains(criteria)){
-                occurences++;
-            }
-        }
-        return occurences;
     }
 
     private static List<List<Person>> getTeamsWithLessPeople(List<List<Person>> teams, Integer peoplePerTeam){
