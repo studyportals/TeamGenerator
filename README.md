@@ -2,8 +2,8 @@
 
 Team generator is used to generate teams from a given list of people according to given **criteria** , distributing people who have the same criteria evenly throughout the teams.
 
-- How to run the application the first time is explained in _How to run the application_ section.
-- How to create a proper CSV file is explained in _How to create a CSV file_ section.
+- How to run the application the first time is explained in [**How to run the application**](#how-to-run-the-application) section.
+- How to create a proper CSV file is explained in [**How to create a CSV file**](#how-to-create-a-csv-file) section.
 
 ## Expected input:
 
