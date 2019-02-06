@@ -71,7 +71,8 @@ If you don&#39;t want two people to be in the same team – assign a criteria th
 
 The application is a Java 10 executable file. That means that you have to have a Java 10 Runtime Environment. It needs to be installed on the machine only once. Please go here to download it.
 
-[http://www.oracle.com/technetwork/java/javase/downloads/jre10-downloads-4417026.html](http://www.oracle.com/technetwork/java/javase/downloads/jre10-downloads-4417026.html)
+(Java 10 is no longer supported and I cannot find a Java 11 Runtime Environment to download by itself, but Java 8 Runtime Environment should also work)
+[https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
 
 ![alt text](img/JRE_10_download.png "JRE 10 download page")
 
