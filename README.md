@@ -69,19 +69,19 @@ If you don&#39;t want two people to be in the same team – assign a criteria th
 
 # How to run the application?
 
-The application is a Java 10 executable file. That means that you have to have a Java 10 Runtime Environment. It needs to be installed on the machine only once. Please go here to download it.
+The application is a Java 11 executable file. That means that you have to have a Java 11 Runtime Environment. It needs to be installed on the machine only once.
+Because Oracle doesn't provide Java 11 Runtime Environment as a downloadable file yet, we will install Java 11 Development Kit which allows to run and develop applications.
+Please go here to download it:
 
-(Java 10 is no longer supported and I cannot find a Java 11 Runtime Environment to download by itself, but Java 8 Runtime Environment should also work)
+https://www.oracle.com/technetwork/java/javase/downloads/jdk11-downloads-5066655.html
 
-[https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
+![alt text](img/JDK_11_download.png "JDK 11 download page")
 
-![alt text](img/JRE_10_download.png "JRE 10 download page")
-
-_5 pic – JRE 10 download page_
+_5 pic – JDK 11 download page_
 
 1. Accept the License Agreement
-2. If you have windows – download the jre-10.0.2\_windows-x64\_bin.exe
-3. Install it by clicking next all the time
+2. If you have windows – download the jdk-11.0.2\_windows-x64\_bin.exe
+3. Install it by clicking next/accept all the time
 4. After installation the application will have a Java runnable icon (_6 pic)_ – that means you can double click it and it will run
 
 ![alt text](img/java_icon_sample.png "Team Generator application icon")
